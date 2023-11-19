@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inicio - Tu Aplicación de Finanzas</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        th {
+            background-color: #ccc; /* Cambiado a un gris suave (#ccc) */
+            color: #333; /* Texto de color oscuro */
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px; /* Ajusta el margen superior para separar los botones de la tabla */
+        }
+
+        .btn-primary {
+            display: inline-block;
+            margin-right: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-container {
+            text-align: center;
+        }
+
+        .table-container {
+            margin-bottom: 20px; /* Ajusta el margen inferior de la tabla */
+        }
+
+        .login-button {
+            margin-top: 20px; /* Ajusta el margen superior para separar del botón de Gastos Fijos */
+        }
+
+        .saldo-actual {
+            background-color: #2196F3; /* Color de fondo azul */
+            color: white;
+            border-radius: 10px; /* Borde redondeado */
+            padding: 20px; /* Aumentado el tamaño del texto */
+            margin: 20px 0; /* Margen superior e inferior para separar el saldo actual */
+            text-align: center;
+            font-size: 24px; /* Tamaño de fuente más grande */
+        }
+        .iframe-container {
+            text-align: center;
+            margin-top: 20px; /* Margen superior para separar el iframe de otros elementos */
+        }
+
+        /* Estilos para el iframe */
+        iframe {
+            width: 700px; /* Ancho del iframe */
+            height: 520px; /* Alto del iframe */
+            margin: 0 auto; /* Centrar horizontalmente */
+            display: block; /* Para centrar verticalmente */
+        }
+    </style>
+</head>
+<body>
+    <h1>Hola, {{ usuario }}</h1>
+    <div class="saldo-actual">
+        Tu saldo actual es: ${{ saldo_actual if saldo_actual is not none else 0 }}
+    </div>
+
+    <div class="table-container">
+        <h1 style="text-align: center;">Tus Movimientos</h1>
+        <table>
+            <tr>
+                <th>Tipo de Transacción</th>
+                <th>Descripción</th>
+                <th>Monto</th>
+                <th>Fecha</th>
+            </tr>
+            {% for transaccion in historial %}
+                <tr>
+                    <td>
+                        {% if transaccion[0] == 1 %}
+                            Ingreso
+                        {% elif transaccion[0] == 2 %}
+                            Egreso
+                        {% else %}
+                            {{ transaccion[0] }}
+                        {% endif %}
+                    </td>
+                    <td>{{ transaccion[1] }}</td>
+                    <td>${{ transaccion[2] }}</td>
+                    <td>{{ transaccion[3].strftime('%d-%b') if transaccion[3] is not none else '' }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="btn-container">
+        <a href="/agregar_transaccion" class="btn-primary">Agregar Transaccion</a>
+        <a href="/wish" class="btn-primary">Wish List</a>
+        <a href="/gastos_fijos" class="btn-primary">Gastos Fijos</a>
+        <a href="/calculadora2" class="btn-primary">Calculadora</a>
+    </div>
+    <div class="login-button">
+        <a href="/" class="btn-primary" style="background-color: #2196F3;">Cerrar Sesión</a>
+    </div>
+    <div class="iframe-container">
+        <iframe title="tpi_soporte" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=0a55406b-a8ec-4633-90ce-9806464730e3&autoAuth=true&ctid=a447b9c2-a213-4ec1-8103-3ea69a516a59" frameborder="0" allowFullScreen="true"></iframe>
+    </div>
+</body>
+</html>
